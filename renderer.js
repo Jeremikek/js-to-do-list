@@ -9,10 +9,10 @@ for(let i = 0; i < data.length; i++){
     let title = document.createElement("p");
     let body = document.createElement("ul");
 
-    checkList.classList.add("container", "bg-primary-subtle", "rounded-2");
+    checkList.classList.add("container", "bg-primary-subtle", "rounded-2", "m-0");
 
     checkList.style.height = '300px';
-    checkList.style.width = '200px';
+    checkList.style.width = '180px';
 
     title.innerHTML = data[i].title;
 
