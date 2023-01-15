@@ -22,3 +22,24 @@ contextBridge.exposeInMainWorld("saveFile", {
         fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
     }
 });
+
+contextBridge.exposeInMainWorld("list", {
+    editTitle: (index, title) => {
+        let data = readSave();
+        data.data[index].title = title;
+        data = JSON.stringify(data, null, 2);
+        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+    },
+    addTask: (index) => {
+        let data = readSave();
+        data.data[index].items.push("New Task");
+        data = JSON.stringify(data, null, 2);
+        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+    },
+    editTask: (index, taskIndex, task) => {
+        let data = readSave();
+        data.data[index].items[taskIndex] = task;
+        data = JSON.stringify(data, null, 2);
+        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+    }
+})
