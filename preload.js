@@ -7,19 +7,23 @@ function readSave(){
     return JSON.parse(fs.readFileSync(path.join(__dirname, "/src/save.json")));
 }
 
+// save function to eliminate redundant code
+function save(data){
+    let file = JSON.stringify(data, null, 2);
+    fs.writeFileSync(path.join(__dirname, "/src/save.json"), file);
+}
+
 contextBridge.exposeInMainWorld("saveFile", {
     load: () => readSave().data,
     add: (obj) => {
         let data = readSave();
         data.data.push(obj);
-        data = JSON.stringify(data, null, 2);
-        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+        save(data);
     },
     delete: (index) => {
         let data = readSave();
         data.data.splice(index, 1);
-        data = JSON.stringify(data, null, 2);
-        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+        save(data);
     }
 });
 
@@ -27,19 +31,21 @@ contextBridge.exposeInMainWorld("list", {
     editTitle: (index, title) => {
         let data = readSave();
         data.data[index].title = title;
-        data = JSON.stringify(data, null, 2);
-        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+        save(data);
     },
     addTask: (index) => {
         let data = readSave();
         data.data[index].items.push("New Task");
-        data = JSON.stringify(data, null, 2);
-        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
+        save(data);
     },
     editTask: (index, taskIndex, task) => {
         let data = readSave();
         data.data[index].items[taskIndex] = task;
-        data = JSON.stringify(data, null, 2);
-        fs.writeFileSync(path.join(__dirname, "/src/save.json"), data);
-    }
+        save(data);
+    },
+    deleteTask: (index, taskIndex) => {
+        let data = readSave();
+        data.data[index].items.splice(taskIndex, 1);
+        save(data);
+    },
 })
