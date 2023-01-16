@@ -1,14 +1,26 @@
+const notification = document.getElementById("notification");
 const mainDisplay = document.getElementById("mainDisplay");
 const addListBtn = document.getElementById("addListBtn");
 const viewModeBtn = document.getElementById("viewModeBtn");
+const exitBtn = document.getElementById("exitBtn");
 
 // Read save.json data
 const data = window.saveFile.load();
 
+// handle notification
+async function handleNotification(text) {
+    notification.classList.remove('d-none');
+    notification.innerHTML = text;
+
+    setTimeout(() => {
+        notification.classList.add('d-none');
+    }, 3000);
+}
+
 // button model
 function createButton(text = "", className = []){
     let button = document.createElement("button");
-    button.classList.add("btn", "btn-primary", ...className);
+    button.classList.add("btn", ...className);
 
     button.innerHTML = text;
 
@@ -60,22 +72,58 @@ function createTask(text = ""){
     return itemDiv;
 }
 
+// option dropdown model
+function createOption() {
+    let dropdownMenu = document.createElement("div");
+    let duplicateAction = document.createElement("a");
+    let colorAction = document.createElement("a");
+
+    dropdownMenu.classList.add("dropdown-menu");
+    duplicateAction.classList.add("dropdown-item");
+    colorAction.classList.add("dropdown-item");
+
+    dropdownMenu.setAttribute("aria-labelledby", "dropdownMenuButton");
+    duplicateAction.innerHTML = "Duplicate"
+    colorAction.innerHTML = "Color"
+
+    dropdownMenu.appendChild(duplicateAction);
+    dropdownMenu.appendChild(colorAction);
+
+    return dropdownMenu;
+}
+
 // list model
 function createList(){
     let list = document.createElement("div");
     let listFrame = document.createElement("div");
     let addBtn = createButton("+");
     let title = createInput("New List", ["title", "m-1"]);
+    let optionDropdown = document.createElement("div");
+    let optionsBtn = createButton();
+    let optionIcon = document.createElement("i");
+    let optionList = createOption();
     let closeBtn =  createButton("x");
 
     list.classList.add("container", "bg-primary-subtle", "rounded-2", "m-0", "p-0");
-    listFrame.classList.add("bg-primary", "d-flex", "justify-content-between");
+    listFrame.classList.add("bg-primary", "d-flex", "align-content-center");
+    optionDropdown.classList.add("dropdown", "d-flex", "justify-content-center");
+    optionIcon.classList.add("bi", "bi-three-dots-vertical");
+
+    optionsBtn.type = "button"
+    optionsBtn.id = "dropdownMenuButton";
+    optionsBtn.setAttribute("data-bs-toggle", "dropdown");
+    optionsBtn.setAttribute("aria-haspopup", "false");
+    optionsBtn.setAttribute("aria-expanded", "false");
 
     list.style.height = '400px';
     list.style.width = '230px';
 
     listFrame.appendChild(addBtn);
     listFrame.appendChild(title);
+    optionsBtn.appendChild(optionIcon);
+    optionDropdown.appendChild(optionsBtn);
+    optionDropdown.appendChild(optionList);
+    listFrame.appendChild(optionDropdown);
     listFrame.appendChild(closeBtn);
     list.appendChild(listFrame);
 
@@ -130,6 +178,7 @@ for(let i = 0; i < data.length; i++){
     mainDisplay.appendChild(list);
 }
 
+// adding event
 addListBtn.addEventListener("click", () => {
     const data = window.saveFile.load();
     let list = createList();
@@ -143,4 +192,10 @@ addListBtn.addEventListener("click", () => {
     mainDisplay.appendChild(list);
 
     window.saveFile.add({"title": "New List", "items": []});
+
+    handleNotification("New List added")
+});
+
+exitBtn.addEventListener("click", async () => {
+    window.program.exit();
 });
