@@ -1,9 +1,8 @@
 {
   "data": [
     {
-      "title": "testing",
+      "title": "testi",
       "items": [
-        "sdsfsdfds",
         "sdfsdfsdf"
       ]
     },
@@ -14,27 +13,12 @@
       ]
     },
     {
-      "title": "testlkjklj",
-      "items": [
-        "sdsfsdfds",
-        "sdfdf",
-        "task3"
-      ]
-    },
-    {
-      "title": "testing",
-      "items": [
-        "sdsfsdfds",
-        "sdfsdfsdf",
-        "sfsdfsdfsd"
-      ]
+      "title": "New List",
+      "items": []
     },
     {
       "title": "New List",
-      "items": [
-        "New Task",
-        "New Task"
-      ]
+      "items": []
     }
   ]
 }
