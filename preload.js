@@ -13,6 +13,11 @@ function save(data){
     fs.writeFileSync(path.join(__dirname, "/src/save.json"), file);
 }
 
+contextBridge.exposeInMainWorld("program", {
+    exit: () => ipcRenderer.invoke("exit"),
+    viewMode: () => null,
+})
+
 contextBridge.exposeInMainWorld("saveFile", {
     load: () => readSave().data,
     add: (obj) => {
