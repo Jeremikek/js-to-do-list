@@ -1,19 +1,67 @@
 {
   "data": [
     {
-      "title": "List1",
+      "title": "Project",
       "items": [
         {
-          "name": "New Task",
+          "name": "JS To Do List",
           "checked": true
         },
         {
-          "name": "New ",
-          "checked": true
+          "name": "Pong game",
+          "checked": false
+        },
+        {
+          "name": "Discord Bot",
+          "checked": false
         }
       ],
       "properties": {
         "color": "success"
+      }
+    },
+    {
+      "title": "Assignment",
+      "items": [
+        {
+          "name": "HCI Project 3",
+          "checked": false
+        }
+      ],
+      "properties": {
+        "color": "danger"
+      }
+    },
+    {
+      "title": "Exam",
+      "items": [
+        {
+          "name": "French Final",
+          "checked": false
+        },
+        {
+          "name": "Ethics Final",
+          "checked": false
+        }
+      ],
+      "properties": {
+        "color": "warning"
+      }
+    },
+    {
+      "title": "Exam",
+      "items": [
+        {
+          "name": "French Final",
+          "checked": false
+        },
+        {
+          "name": "Ethics Final",
+          "checked": false
+        }
+      ],
+      "properties": {
+        "color": "warning"
       }
     },
     {
