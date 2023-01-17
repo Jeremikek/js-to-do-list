@@ -73,44 +73,78 @@ function createTask(text = ""){
 function createOption() {
     let dropdownMenu = document.createElement("div");
     let duplicateAction = document.createElement("a");
-    let colorAction = document.createElement("a");
+    let colorDropdown = document.createElement("div");
+    let colorBtn = createButton("Color", ["dropdown-item"]);
+    let colorMenu = document.createElement("div");
+
+    let colors = ["blue", "red", "yellow", "green"];
+    colors = colors.map(color => {
+         let obj = document.createElement("a");
+         obj.classList.add("dropdown-item");
+         obj.innerHTML = color;
+         return obj;
+    });
+    //let [blue, red, yellow, green] = colors;
 
     dropdownMenu.classList.add("dropdown-menu");
     duplicateAction.classList.add("dropdown-item");
-    colorAction.classList.add("dropdown-item");
+    colorMenu.classList.add("dropdown-menu", "dropdown-submenu");
 
     dropdownMenu.setAttribute("aria-labelledby", "dropdownMenuButton");
     duplicateAction.innerHTML = "Duplicate"
-    colorAction.innerHTML = "Color"
+
+    colorMenu.style.display = "none";
+    colorMenu.style.position = "absolute";
+    colorMenu.style.left = "100%";
+    colorMenu.style.top = "0";
 
     dropdownMenu.appendChild(duplicateAction);
-    dropdownMenu.appendChild(colorAction);
+    colors.map(color => {
+        colorMenu.appendChild(color);
+    });
+    colorDropdown.appendChild(colorBtn);
+    colorDropdown.appendChild(colorMenu);
+    dropdownMenu.appendChild(colorDropdown);
 
     // duplicate event
     duplicateAction.addEventListener("click", (e) => {
-        console.log(e.target.closest(".list").getAttribute("index"));
-        window.saveFile.duplicate(e.target.closest(".list").getAttribute("index"));
-        //mainDisplay.innerHTML = "";
-        //createDisplay();
+        const index = e.target.closest(".list").getAttribute("index");
+        window.saveFile.duplicate(index);
+        mainDisplay.innerHTML = "";
+        createDisplay();
+    });
+
+    colorDropdown.addEventListener("mouseover", (e) => {
+        colorMenu.style.display = "block";
+    });
+
+    colorDropdown.addEventListener("mouseout", () => {
+        colorMenu.style.display = "none";
     });
 
     return dropdownMenu;
 }
 
 // list model
-function createList(){
+function createList(color = "primary"){
+    // body of list 
     let list = document.createElement("div");
+    // top frame
     let listFrame = document.createElement("div");
+    // add button
     let addBtn = createButton("+");
+    // title
     let title = createInput("New List", ["title", "m-1", "text-white"]);
+    // option button
     let optionDropdown = document.createElement("div");
     let optionsBtn = createButton();
     let optionIcon = document.createElement("i");
     let optionList = createOption();
+    // close button
     let closeBtn =  createButton("x");
 
-    list.classList.add("container", "bg-primary-subtle", "rounded-2", "m-0", "p-0", "list");
-    listFrame.classList.add("bg-primary", "d-flex", "align-content-center");
+    list.classList.add("container", "rounded-2", "m-0", "p-0", "list");
+    listFrame.classList.add("d-flex", "align-content-center");
     optionDropdown.classList.add("dropdown", "d-flex", "justify-content-center");
     optionIcon.classList.add("bi", "bi-three-dots-vertical");
 
@@ -122,6 +156,10 @@ function createList(){
 
     list.style.height = '400px';
     list.style.width = '230px';
+
+    // set color based on color properties
+    list.classList.add(`bg-${color}-subtle`);
+    listFrame.classList.add(`bg-${color}`);
 
     listFrame.appendChild(addBtn);
     listFrame.appendChild(title);
@@ -166,7 +204,7 @@ function createDisplay() {
     const data = window.saveFile.load();
 
     for(let i = 0; i < data.length; i++){
-        let list = createList();
+        let list = createList(data[i].properties.color);
         let title = list.querySelector(".title");
         let body = document.createElement("div");
 
@@ -203,7 +241,7 @@ addListBtn.addEventListener("click", () => {
     list.appendChild(body);
     mainDisplay.appendChild(list);
 
-    window.saveFile.add({"title": "New List", "items": []});
+    window.saveFile.add({"title": "New List", "items": [], "properties": { "color": "blue" }});
 
     handleNotification("New List added")
 });
