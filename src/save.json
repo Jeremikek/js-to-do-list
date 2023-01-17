@@ -6,7 +6,7 @@
         "New Task"
       ],
       "properties": {
-        "color": "primary"
+        "color": "success"
       }
     },
     {
