@@ -4,9 +4,6 @@ const addListBtn = document.getElementById("addListBtn");
 const viewModeBtn = document.getElementById("viewModeBtn");
 const exitBtn = document.getElementById("exitBtn");
 
-// Read save.json data
-const data = window.saveFile.load();
-
 // handle notification
 async function handleNotification(text) {
     notification.classList.remove('d-none');
@@ -59,14 +56,14 @@ function createTask(text = ""){
 
     // delete task event
     delBtn.addEventListener("click", (e) => {
-        window.list.deleteTask(e.target.closest(".container").getAttribute("index"), itemDiv.getAttribute("itemIndex"));
+        window.list.deleteTask(e.target.closest(".list").getAttribute("index"), itemDiv.getAttribute("itemIndex"));
 
         e.target.parentNode.remove();
     });
 
     // edit task event
     item.addEventListener("focusout", (e) => {
-        window.list.editTask(e.target.closest(".container").getAttribute("index"), itemDiv.getAttribute("itemIndex"), e.target.value);
+        window.list.editTask(e.target.closest(".list").getAttribute("index"), itemDiv.getAttribute("itemIndex"), e.target.value);
     });
 
     return itemDiv;
@@ -89,6 +86,14 @@ function createOption() {
     dropdownMenu.appendChild(duplicateAction);
     dropdownMenu.appendChild(colorAction);
 
+    // duplicate event
+    duplicateAction.addEventListener("click", (e) => {
+        console.log(e.target.closest(".list").getAttribute("index"));
+        window.saveFile.duplicate(e.target.closest(".list").getAttribute("index"));
+        //mainDisplay.innerHTML = "";
+        //createDisplay();
+    });
+
     return dropdownMenu;
 }
 
@@ -97,14 +102,14 @@ function createList(){
     let list = document.createElement("div");
     let listFrame = document.createElement("div");
     let addBtn = createButton("+");
-    let title = createInput("New List", ["title", "m-1"]);
+    let title = createInput("New List", ["title", "m-1", "text-white"]);
     let optionDropdown = document.createElement("div");
     let optionsBtn = createButton();
     let optionIcon = document.createElement("i");
     let optionList = createOption();
     let closeBtn =  createButton("x");
 
-    list.classList.add("container", "bg-primary-subtle", "rounded-2", "m-0", "p-0");
+    list.classList.add("container", "bg-primary-subtle", "rounded-2", "m-0", "p-0", "list");
     listFrame.classList.add("bg-primary", "d-flex", "align-content-center");
     optionDropdown.classList.add("dropdown", "d-flex", "justify-content-center");
     optionIcon.classList.add("bi", "bi-three-dots-vertical");
@@ -129,13 +134,13 @@ function createList(){
 
     // close button event
     closeBtn.addEventListener("click", (e) => {
-        window.saveFile.delete(e.target.closest(".container").getAttribute("index"));
-        e.target.closest(".container").remove();
+        window.saveFile.delete(e.target.closest(".list").getAttribute("index"));
+        e.target.closest(".list").remove();
     });
 
     // edit title event
     title.addEventListener("focusout", (e) => {
-        const index = e.target.closest(".container").getAttribute("index");
+        const index = e.target.closest(".list").getAttribute("index");
         window.list.editTitle(index, e.target.value);
     });
 
@@ -145,9 +150,9 @@ function createList(){
 
         let itemDiv = createTask("New Task");
 
-        itemDiv.setAttribute("itemIndex", data[e.target.closest(".container").getAttribute("index")].items.length);
+        itemDiv.setAttribute("itemIndex", data[e.target.closest(".list").getAttribute("index")].items.length);
 
-        window.list.addTask(e.target.closest(".container").getAttribute("index"));
+        window.list.addTask(e.target.closest(".list").getAttribute("index"));
         
         e.target.parentNode.nextSibling.appendChild(itemDiv);
     });
@@ -156,27 +161,34 @@ function createList(){
 };
 
 // Create list from data
-for(let i = 0; i < data.length; i++){
-    let list = createList();
-    let title = list.querySelector(".title");
-    let body = document.createElement("div");
+function createDisplay() {
+    // Read save.json data
+    const data = window.saveFile.load();
 
-    body.classList.add("px-2");
+    for(let i = 0; i < data.length; i++){
+        let list = createList();
+        let title = list.querySelector(".title");
+        let body = document.createElement("div");
 
-    list.setAttribute("index", i);
-    title.value = data[i].title;
+        body.classList.add("px-2");
 
-    for(let x = 0; x < data[i].items.length; x++){
-        let itemDiv = createTask(data[i].items[x]);
+        list.setAttribute("index", i);
+        title.value = data[i].title;
 
-        itemDiv.setAttribute("itemIndex", x);
+        for(let x = 0; x < data[i].items.length; x++){
+            let itemDiv = createTask(data[i].items[x]);
 
-        body.appendChild(itemDiv);
+            itemDiv.setAttribute("itemIndex", x);
+
+            body.appendChild(itemDiv);
+        }
+
+        list.appendChild(body);
+        mainDisplay.appendChild(list);
     }
-
-    list.appendChild(body);
-    mainDisplay.appendChild(list);
 }
+
+createDisplay();
 
 // adding event
 addListBtn.addEventListener("click", () => {
