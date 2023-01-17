@@ -198,7 +198,7 @@ function createList(color = "primary"){
         window.saveFile.delete(e.target.closest(".list").getAttribute("index"));
         mainDisplay.innerHTML = "";
         createDisplay();
-        handleNotification("List Deleted")
+        handleNotification("List Deleted");
     });
 
     // edit title event
