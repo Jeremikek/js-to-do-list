@@ -2,19 +2,21 @@
   "data": [
     {
       "title": "List1",
-      "items": []
+      "items": [
+        "New Task"
+      ],
+      "properties": {
+        "color": "primary"
+      }
     },
     {
-      "title": "List2",
-      "items": []
-    },
-    {
-      "title": "List3",
-      "items": []
-    },
-    {
-      "title": "List4",
-      "items": []
+      "title": "New List",
+      "items": [
+        "New Task"
+      ],
+      "properties": {
+        "color": "danger"
+      }
     }
   ]
 }
