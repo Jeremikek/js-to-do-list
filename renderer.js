@@ -1,3 +1,5 @@
+const bg = document.getElementById("bg");
+const sidebar = document.getElementById("sidebar");
 const notification = document.getElementById("notification");
 const mainDisplay = document.getElementById("mainDisplay");
 const addListBtn = document.getElementById("addListBtn");
@@ -185,10 +187,11 @@ function createList(color = "primary"){
     listFrame.appendChild(closeBtn);
     list.appendChild(listFrame);
 
-    // close button event
+    // close button event (cant think of a better way to do it now)
     closeBtn.addEventListener("click", (e) => {
         window.saveFile.delete(e.target.closest(".list").getAttribute("index"));
-        e.target.closest(".list").remove();
+        mainDisplay.innerHTML = "";
+        createDisplay();
     });
 
     // edit title event
@@ -241,7 +244,16 @@ function createDisplay() {
     }
 }
 
+function checkTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        bg.classList.replace("bg-secondary-subtle", "bg-dark"); 
+        sidebar.classList.replace("bg-primary", "bg-secondary");
+        document.getElementById("viewIcon").classList.replace("bi-brightness-high", "bi-moon");
+    }
+}
+
 createDisplay();
+checkTheme();
 
 // adding event
 addListBtn.addEventListener("click", () => {
@@ -259,6 +271,19 @@ addListBtn.addEventListener("click", () => {
     window.saveFile.add({"title": "New List", "items": [], "properties": { "color": "primary" }});
 
     handleNotification("New List added")
+});
+
+viewModeBtn.addEventListener("click", async () => {
+    const isDarkMode = await window.program.viewMode();
+    if(isDarkMode) {
+        bg.classList.replace("bg-secondary-subtle", "bg-dark"); 
+        sidebar.classList.replace("bg-primary", "bg-secondary");
+        document.getElementById("viewIcon").classList.replace("bi-brightness-high", "bi-moon");
+    }else{
+        bg.classList.replace("bg-dark", "bg-secondary-subtle");
+        sidebar.classList.replace("bg-secondary", "bg-primary");
+        document.getElementById("viewIcon").classList.replace("bi-moon", "bi-brightness-high");
+    }
 });
 
 exitBtn.addEventListener("click", async () => {
