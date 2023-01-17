@@ -50,12 +50,12 @@ contextBridge.exposeInMainWorld("list", {
     },
     addTask: (index) => {
         let data = readSave();
-        data.data[index].items.push("New Task");
+        data.data[index].items.push({"name": "New Task", "checked":false});
         save(data);
     },
     editTask: (index, taskIndex, task) => {
         let data = readSave();
-        data.data[index].items[taskIndex] = task;
+        data.data[index].items[taskIndex].name = task;
         save(data);
     },
     deleteTask: (index, taskIndex) => {
@@ -63,4 +63,9 @@ contextBridge.exposeInMainWorld("list", {
         data.data[index].items.splice(taskIndex, 1);
         save(data);
     },
+    checkTask: (index, taskIndex) => {
+        let data = readSave();
+        data.data[index].items[taskIndex].checked = (data.data[index].items[taskIndex].checked) ? false : true;
+        save(data); 
+    }
 })
