@@ -27,9 +27,7 @@ contextBridge.exposeInMainWorld("saveFile", {
     },
     duplicate: (index) => {
         let data = readSave();
-        let clone = data.data[index];
-        console.log(data);
-        data.data.splice(index+1, 0, clone);
+        data.data.splice(index, 0, data.data[index]);
         save(data);
     },
     delete: (index) => {
