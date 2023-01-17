@@ -41,7 +41,7 @@ function createInput(text = "", className = []){
 }
 
 // task model
-function createTask(text = ""){
+function createTask(text = "", checked = false){
     let itemDiv = document.createElement("div");
     let checkBox = document.createElement("input");
     let item = createInput(text);
@@ -51,6 +51,7 @@ function createTask(text = ""){
     checkBox.classList.add("form-check-input");
 
     checkBox.type = "checkbox";
+    checkBox.checked = checked;
 
     itemDiv.appendChild(checkBox);
     itemDiv.appendChild(item);
@@ -66,6 +67,11 @@ function createTask(text = ""){
     // edit task event
     item.addEventListener("focusout", (e) => {
         window.list.editTask(e.target.closest(".list").getAttribute("index"), itemDiv.getAttribute("itemIndex"), e.target.value);
+    });
+
+    // check event
+    checkBox.addEventListener("click", (e) => {
+        window.list.checkTask(e.target.closest(".list").getAttribute("index"), itemDiv.getAttribute("itemIndex"));
     });
 
     return itemDiv;
@@ -192,6 +198,7 @@ function createList(color = "primary"){
         window.saveFile.delete(e.target.closest(".list").getAttribute("index"));
         mainDisplay.innerHTML = "";
         createDisplay();
+        handleNotification("List Deleted")
     });
 
     // edit title event
@@ -232,7 +239,7 @@ function createDisplay() {
         title.value = data[i].title;
 
         for(let x = 0; x < data[i].items.length; x++){
-            let itemDiv = createTask(data[i].items[x]);
+            let itemDiv = createTask(data[i].items[x].name, data[i].items[x].checked);
 
             itemDiv.setAttribute("itemIndex", x);
 
@@ -284,6 +291,8 @@ viewModeBtn.addEventListener("click", async () => {
         sidebar.classList.replace("bg-secondary", "bg-primary");
         document.getElementById("viewIcon").classList.replace("bi-moon", "bi-brightness-high");
     }
+
+    handleNotification("Dark Mode " + ((isDarkMode) ? "On" : "Off"));
 });
 
 exitBtn.addEventListener("click", async () => {
