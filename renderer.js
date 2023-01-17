@@ -77,15 +77,19 @@ function createOption() {
     let colorBtn = createButton("Color", ["dropdown-item"]);
     let colorMenu = document.createElement("div");
 
-    let colors = ["blue", "red", "yellow", "green"];
-    colors = colors.map(color => {
+    let colors = ["primary", "danger", "warning", "success"];
+    colorItems = colors.map(color => {
          let obj = document.createElement("a");
-         obj.classList.add("dropdown-item");
+         obj.classList.add("dropdown-item", "text-white");
          obj.innerHTML = color;
          return obj;
     });
-    //let [blue, red, yellow, green] = colors;
+    let [blue, red, yellow, green] = colorItems;
 
+    blue.classList.add("bg-primary");
+    red.classList.add("bg-danger");
+    yellow.classList.add("bg-warning");
+    green.classList.add("bg-success");
     dropdownMenu.classList.add("dropdown-menu");
     duplicateAction.classList.add("dropdown-item");
     colorMenu.classList.add("dropdown-menu", "dropdown-submenu");
@@ -95,13 +99,11 @@ function createOption() {
 
     colorMenu.style.display = "none";
     colorMenu.style.position = "absolute";
-    colorMenu.style.left = "100%";
+    colorMenu.style.right = "100%";
     colorMenu.style.top = "0";
 
     dropdownMenu.appendChild(duplicateAction);
-    colors.map(color => {
-        colorMenu.appendChild(color);
-    });
+    colorItems.map(color => { colorMenu.appendChild(color); });
     colorDropdown.appendChild(colorBtn);
     colorDropdown.appendChild(colorMenu);
     dropdownMenu.appendChild(colorDropdown);
@@ -120,6 +122,19 @@ function createOption() {
 
     colorDropdown.addEventListener("mouseout", () => {
         colorMenu.style.display = "none";
+    });
+
+    colorItems.map((item, i) => {
+        item.addEventListener("click", (e) => {
+            const index = e.target.closest(".list").getAttribute("index");
+            window.list.editColor(index, colors[i]);
+            // remove bg
+            e.target.closest(".list").classList.remove("bg-primary-subtle", "bg-danger-subtle", "bg-warning-subtle", "bg-success-subtle");
+            e.target.closest(".frame").classList.remove("bg-primary", "bg-danger", "bg-warning", "bg-success");
+            // add bg
+            e.target.closest(".list").classList.add(`bg-${colors[i]}-subtle`);
+            e.target.closest(".frame").classList.add(`bg-${colors[i]}`);
+        });
     });
 
     return dropdownMenu;
@@ -143,8 +158,8 @@ function createList(color = "primary"){
     // close button
     let closeBtn =  createButton("x");
 
-    list.classList.add("container", "rounded-2", "m-0", "p-0", "list");
-    listFrame.classList.add("d-flex", "align-content-center");
+    list.classList.add("container", "rounded-2", "m-0", "p-0", "list", "shadow");
+    listFrame.classList.add("d-flex", "align-content-center", "frame");
     optionDropdown.classList.add("dropdown", "d-flex", "justify-content-center");
     optionIcon.classList.add("bi", "bi-three-dots-vertical");
 
@@ -241,7 +256,7 @@ addListBtn.addEventListener("click", () => {
     list.appendChild(body);
     mainDisplay.appendChild(list);
 
-    window.saveFile.add({"title": "New List", "items": [], "properties": { "color": "blue" }});
+    window.saveFile.add({"title": "New List", "items": [], "properties": { "color": "primary" }});
 
     handleNotification("New List added")
 });
