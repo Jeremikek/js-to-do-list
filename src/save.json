@@ -3,19 +3,17 @@
     {
       "title": "List1",
       "items": [
-        "New Task"
+        {
+          "name": "New Task",
+          "checked": true
+        },
+        {
+          "name": "New ",
+          "checked": true
+        }
       ],
       "properties": {
         "color": "success"
-      }
-    },
-    {
-      "title": "New List",
-      "items": [
-        "New Task"
-      ],
-      "properties": {
-        "color": "danger"
       }
     },
     {
