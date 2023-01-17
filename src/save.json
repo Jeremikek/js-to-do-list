@@ -17,6 +17,13 @@
       "properties": {
         "color": "danger"
       }
+    },
+    {
+      "title": "New List",
+      "items": [],
+      "properties": {
+        "color": "primary"
+      }
     }
   ]
 }
