@@ -15,7 +15,7 @@ function save(data){
 
 contextBridge.exposeInMainWorld("program", {
     exit: () => ipcRenderer.invoke("exit"),
-    viewMode: () => null,
+    viewMode: () => ipcRenderer.invoke("dark-mode:toggle"),
 })
 
 contextBridge.exposeInMainWorld("saveFile", {
