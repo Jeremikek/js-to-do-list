@@ -43,6 +43,11 @@ contextBridge.exposeInMainWorld("list", {
         data.data[index].title = title;
         save(data);
     },
+    editColor: (index, color) => {
+        let data = readSave();
+        data.data[index].properties.color = color;
+        save(data);
+    },
     addTask: (index) => {
         let data = readSave();
         data.data[index].items.push("New Task");
