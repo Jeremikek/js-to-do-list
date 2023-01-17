@@ -1,23 +1,19 @@
 {
   "data": [
     {
-      "title": "testi",
-      "items": [
-        "sdfsdfsdf"
-      ]
-    },
-    {
-      "title": "tesjljlk",
-      "items": [
-        "sdsfs"
-      ]
-    },
-    {
-      "title": "New List",
+      "title": "List1",
       "items": []
     },
     {
-      "title": "New List",
+      "title": "List2",
+      "items": []
+    },
+    {
+      "title": "List3",
+      "items": []
+    },
+    {
+      "title": "List4",
       "items": []
     }
   ]
